@@ -1,6 +1,6 @@
 # React-Native-To-Do-App
 
-This is a React Native App for keep track of to do list.
+This is a React Native App for keep track of a to do list.
 
 Run the commands after cloning
 
