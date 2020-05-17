@@ -1,4 +1,4 @@
-# Expo-Firebase-ToDoApp
+# React-Native-To-Do-App
 
 This is a React Native App for keep track of to do list.
 
