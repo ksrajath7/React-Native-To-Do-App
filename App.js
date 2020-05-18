@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { TouchableOpacity, StyleSheet, Text, View, TextInput, Button, StatusBar, FlatList } from 'react-native';
-import {Icon, colors} from 'react-native-elements';
-import {Snackbar, Headline} from 'react-native-paper';
+import { TouchableOpacity, StyleSheet, Text, View, TextInput, StatusBar, FlatList } from 'react-native';
+import { Icon, colors } from 'react-native-elements';
+import { Snackbar } from 'react-native-paper';
 import FlatListView from './screens/FlatListView'
 
 export default function App() {
@@ -9,12 +9,18 @@ export default function App() {
   const [listViewData, setListViewData] = useState(["task1","task2"])
   const [undoData, setUndoData] = useState([])
   const [newData, setNewData] = useState(null)
+  const [displayNewData, setDisplayNewData] = useState(null)
+  // const [newDataCreated, setNewDataCreated] = useState(false)
   const [deletedData, setDeletedData] = useState('')
   const [deleted, setDeleted] = useState(false)
   const [created, setCreated] = useState(false)
   const [deletedAll, setDeletedAll] = useState(false)
+  const [touched, setTouched] = useState(false)
 
-
+  const onTouch = (item)=>{
+    setTouched(true)
+    setDeletedData(item)
+  }
 
   const onDeletePress=(item)=>{
             setUndoData(listViewData)
@@ -33,13 +39,13 @@ export default function App() {
       </View>
       <View style={styles.container}>
         <View style={{flex:1}}>
-          <FlatListView data={listViewData} onDelete={onDeletePress}></FlatListView>
+          <FlatListView onTouch={onTouch} data={listViewData}></FlatListView>
         </View>
         <Snackbar
           style={styles.snakeBar}
           visible={deleted}
           onDismiss={()=>{setDeleted(false)}}
-          duration={1500}
+          duration={500}
           action={{
             label: 'Undo',
               onPress: () => {
@@ -50,30 +56,19 @@ export default function App() {
           >
             {deletedData} is removed from list
         </Snackbar>
-        { newData &&
           <Snackbar
           style={styles.snakeBar}
           visible={created}
-          onDismiss={()=>{ setCreated(false); setNewData(null) }}
-          duration={2500}
-          action={{
-            
-            label: 'OK',
-              onPress: () => {
-                
-                setCreated(false)
-                setNewData(null) 
-              },
-            }}
+          onDismiss={()=>{ setCreated(false); setNewData(null);}}
+          duration={500}
           >
-            {newData} is created
+            {displayNewData} is created
         </Snackbar>
-        }
         <Snackbar
           style={styles.snakeBar}
           visible={deletedAll}
           onDismiss={()=>{setDeletedAll(false)}}
-          duration={1500}
+          duration={1000}
           action={{
             label: 'Undo',
               onPress: () => {
@@ -82,12 +77,30 @@ export default function App() {
               },
             }}
           >
+            
+            
             All entries are removed from list
+        </Snackbar>
+        <Snackbar
+          style={styles.snakeBar}
+          visible={touched}
+          onDismiss={()=>{setTouched(false)}}
+          duration={500}
+          action={{
+            label: 'Delete',
+              onPress: () => {
+                onDeletePress(deletedData)
+              },
+            }}
+          >
+            
+            
+            Delete {deletedData} ?
         </Snackbar>
         
         <View style={{justifyContent:"space-between", flexDirection:"row", flex:0, paddingTop:20, paddingHorizontal:10, paddingBottom:10}}>
           <View style={{width:"90%"}}>
-            <TextInput value={newData} onChangeText={text=>{setNewData(text)}} placeholder="Create your new item" multiline></TextInput>
+            <TextInput  onTouchStart={()=>{setCreated(false);setNewData(null)}} value={newData} onChangeText={text=>{setNewData(text)}} placeholder="Create your new item" ></TextInput>
           </View>
           
           <View style={{width:"10%"}}>
@@ -95,15 +108,17 @@ export default function App() {
               if(newData)
               {
                 const a=listViewData.filter(x=>(x===newData))
-                console.log(a.length)
                 if(a.length===0){
                   setListViewData([...listViewData, newData])
                   setCreated(true)
+                  setDisplayNewData(newData)
                 }
                 else{
                   alert(newData + " Already exists")
-                  setNewData(null)
+                  setCreated(false)
                 }
+                setNewData(null)
+
             }
           }}></Icon>
           </View>
@@ -113,7 +128,6 @@ export default function App() {
 
       </View>
     </View>
-    
   )
 }
 
