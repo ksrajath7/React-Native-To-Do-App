@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TouchableOpacity, StyleSheet, Text, View, TextInput, StatusBar, FlatList } from 'react-native';
+import { TouchableOpacity, StyleSheet, Text, View, TextInput, StatusBar, Image } from 'react-native';
 import { Icon, colors } from 'react-native-elements';
 import { Snackbar } from 'react-native-paper';
 import FlatListView from './FlatListView';
@@ -18,19 +18,12 @@ export default function Home() {
   const [created, setCreated] = useState(false)
   const [deletedAll, setDeletedAll] = useState(false)
   const [touched, setTouched] = useState(false)
+  const [noTask, setNoTask] = useState(false)
 
   let todos = useSelector((state) => state.todos);
-  console.log("here.....")
-  console.log(todos)
-  console.log("herethere.....")
+
 
   const dispatch = useDispatch();
-
-  React.useEffect(()=>{
-    dispatch(loadTodos([1,2,3]));
-  },[])
-
-
 
   const onTouch = (item)=>{
     setTouched(true)
@@ -38,8 +31,9 @@ export default function Home() {
   }
 
   const onDeletePress=(item)=>{
-            setUndoData(listViewData)
-            setListViewData(listViewData.filter(x=>(x!==item)))
+            setUndoData(todos)
+            // setListViewData(listViewData.filter(x=>(x!==item)))
+            dispatch(removeTodo(item))
             setDeletedData(item)
             setDeleted(true)
   }
@@ -48,23 +42,22 @@ export default function Home() {
     <View style={{flex:1}}>
       <View style={styles.header}>
         <Text adjustsFontSizeToFit style={{ color:"#333644", fontSize:20, fontWeight:"bold", letterSpacing:0 }}>To do App</Text>
-        <TouchableOpacity onPress={()=>{setDeletedAll(true); setUndoData(listViewData); setListViewData([])}}>
+        <TouchableOpacity onPress={()=>{setDeletedAll(true); setUndoData(todos); dispatch(loadTodos([]))}}>
           <Text adjustsFontSizeToFit style={{ color:"#333644", fontSize:15, fontWeight:"bold" }}>Clear all</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.container}>
         <View style={{flex:1}}>
-          <FlatListView onTouch={onTouch} data={listViewData}></FlatListView>
+          <FlatListView onTouch={onTouch} data={todos}></FlatListView>
         </View>
         <Snackbar
           style={styles.snakeBar}
           visible={deleted}
           onDismiss={()=>{setDeleted(false)}}
-          duration={500}
           action={{
             label: 'Undo',
               onPress: () => {
-                setListViewData(undoData)
+                dispatch(loadTodos(undoData))
                 setDeleted(false)
               },
             }}
@@ -83,11 +76,11 @@ export default function Home() {
           style={styles.snakeBar}
           visible={deletedAll}
           onDismiss={()=>{setDeletedAll(false)}}
-          duration={1000}
+          duration={3000}
           action={{
             label: 'Undo',
               onPress: () => {
-                setListViewData(undoData)
+                dispatch(loadTodos(undoData))
                 setDeletedAll(false)
               },
             }}
@@ -100,7 +93,7 @@ export default function Home() {
           style={styles.snakeBar}
           visible={touched}
           onDismiss={()=>{setTouched(false)}}
-          duration={500}
+          duration={1500}
           action={{
             label: 'Delete',
               onPress: () => {
@@ -124,7 +117,7 @@ export default function Home() {
               {
                 const a=listViewData.filter(x=>(x===newData))
                 if(a.length===0){
-                  setListViewData([...listViewData, newData])
+                  dispatch(createTodo(newData))
                   setCreated(true)
                   setDisplayNewData(newData)
                 }

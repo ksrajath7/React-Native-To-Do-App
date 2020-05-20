@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { Text, View, FlatList, TextInput } from 'react-native';
+import { useSelector, useDispatch } from "react-redux";
 import {Icon} from 'react-native-elements';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const TextInputView=(props)=>{
+  
   const lightGrey='#fafaf6';
   const darkBlue="#2d4059"
   const goldenYellow='#ffd717'   //#07d5c0   //#c6e872   //#fbffa3

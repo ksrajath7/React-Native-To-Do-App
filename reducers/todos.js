@@ -6,7 +6,7 @@ const REMOVE = 'todos/REMOVE';
 
 export const loadTodos = (todos) => ({type: LOAD, todos})
 export const createTodo = (todo) => ({type: CREATE, todo})
-export const removeTodo = (todoId) => ({type: REMOVE, todoId})
+export const removeTodo = (todo) => ({type: REMOVE, todo})
 
 const reducer = (todos=[], action) => {
     console.log(action.type);
@@ -14,9 +14,9 @@ const reducer = (todos=[], action) => {
         case LOAD:
             return action.todos
         case CREATE:
-            return [...todos, action.todo].sort(_dateSort)
+            return [...todos, action.todo]
         case REMOVE:
-            return todos.filter(x=>(x.id!==action.todoId))
+            return todos.filter(x=>(x!==action.todo))
         default:
             console.log("Unknown action!")
             return todos;
