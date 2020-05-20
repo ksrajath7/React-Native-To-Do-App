@@ -3,6 +3,8 @@ import { TouchableOpacity, StyleSheet, Text, View, TextInput, StatusBar, FlatLis
 import { Icon, colors } from 'react-native-elements';
 import { Snackbar } from 'react-native-paper';
 import FlatListView from './FlatListView';
+import { useSelector, useDispatch } from "react-redux";
+import { loadTodos, createTodo, removeTodo } from "../reducers/todos";
 
 export default function Home() {
 
@@ -16,6 +18,19 @@ export default function Home() {
   const [created, setCreated] = useState(false)
   const [deletedAll, setDeletedAll] = useState(false)
   const [touched, setTouched] = useState(false)
+
+  let todos = useSelector((state) => state.todos);
+  console.log("here.....")
+  console.log(todos)
+  console.log("herethere.....")
+
+  const dispatch = useDispatch();
+
+  React.useEffect(()=>{
+    dispatch(loadTodos([1,2,3]));
+  },[])
+
+
 
   const onTouch = (item)=>{
     setTouched(true)

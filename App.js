@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
-import { TouchableOpacity, StyleSheet, Text, View, TextInput, StatusBar, FlatList } from 'react-native';
-import { Icon, colors } from 'react-native-elements';
-import { Snackbar } from 'react-native-paper';
-import FlatListView from './screens/FlatListView'
+import {Provider } from 'react-redux';
 import Home from './screens/Home';
+import { createStore } from "redux";
+import reducer from "./reducers/index";
+
+const store = createStore(reducer);
 
 export default function App() {
 
   return(
-    <Home></Home>
+    <Provider store={store}>
+      <Home></Home>
+    </Provider>
   )
 }
