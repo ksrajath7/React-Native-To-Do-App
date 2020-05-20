@@ -3,8 +3,6 @@ import { Text, View, FlatList, TextInput } from 'react-native';
 import {Icon} from 'react-native-elements';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-
-
 const TextInputView=(props)=>{
   const lightGrey='#fafaf6';
   const darkBlue="#2d4059"

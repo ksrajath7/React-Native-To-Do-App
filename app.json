@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "FirebaseDemo",
-    "slug": "FirebaseDemo",
+    "name": "Tisa",
+    "slug": "To-do-list",
     "platforms": [
       "ios",
       "android",
@@ -9,11 +9,11 @@
     ],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/logo.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#001f3f"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -23,6 +23,10 @@
     ],
     "ios": {
       "supportsTablet": true
+    },
+    "android": {
+      "package": "com.tisaInc.tisa",
+      "versionCode": 1
     }
   }
 }
